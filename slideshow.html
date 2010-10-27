@@ -1,0 +1,226 @@
+<!doctype xhtml>
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+<title>photogpxslideshow</title>
+<style type="text/css">
+		body {
+			background-color: black;
+		}
+		#debug {
+			color: white;
+		}
+		#imageContainer {
+			position: absolute;
+			border: 0px;
+			margin: 0px;
+			left: 0px;
+			top: 0px;
+			width: 100%;
+			height: 100%;
+			z-index: 0;
+		}
+    .image {
+      -webkit-transition-duration: 1s;
+      -webkit-transition-delay: 2s;
+			-webkit-transition-property: opacity;
+			position: absolute;
+			visibility: hidden;
+			opacity: 0;
+			width: 0px;
+			height: 0px;
+			top: 0px;
+			left: 0px;
+    }
+		#mapCanvas {
+			opacity: 0.5;
+			position: absolute;
+			bottom: 0px;
+			right: 0px;
+			width: 20%;
+			height: 25%;
+			margin: 40px;
+		}
+		#mapCanvas:hover {
+			opacity: 0.8;
+		}
+		#captionDiv {
+			position: absolute;
+			width: 100%;
+			margin: 0px;
+			left: 0px;
+			bottom: 0px;
+			z-index: 1;
+		}
+		#caption {
+			margin-right: auto;
+			margin-left: auto;
+			width: 40%;
+			color: black;
+			background-color: white;
+			opacity: 0.5;
+			text-align: center;
+		}
+
+
+</style>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript">
+	var imagePreload=3;
+	var imageIndex=0;
+	var imageData=[
+{src: "IMG_5777.JPG", date: "2010:10:03 10:05:04", lat: 45.214672, lon: 6.736342, alt: 1330.119900}, 
+{src: "IMG_5780.JPG", date: "2010:10:03 10:05:18", lat: 45.215106, lon: 6.736244, alt: 1333.970000}, 
+{src: "IMG_5781.JPG", date: "2010:10:03 10:17:05", lat: 45.222264, lon: 6.738811, alt: 1469.990000}, 
+{src: "IMG_5782.JPG", date: "2010:10:03 11:43:20", lat: 45.255603, lon: 6.755872, alt: 2194.349900}, 
+{src: "IMG_5784.JPG", date: "2010:10:03 11:44:30", lat: 45.255667, lon: 6.755367, alt: 2196.750000}, 
+{src: "IMG_5786.JPG", date: "2010:10:03 12:08:34", lat: 45.256594, lon: 6.752608, alt: 2239.050000}, 
+{src: "IMG_5787.JPG", date: "2010:10:03 12:39:15", lat: 45.250719, lon: 6.732103, alt: 2234.239900}, 
+{src: "IMG_5788.JPG", date: "2010:10:03 12:40:37", lat: 45.251081, lon: 6.731719, alt: 2235.199900}, 
+{src: "IMG_5789.JPG", date: "2010:10:03 13:19:57", lat: 45.264039, lon: 6.726092, alt: 2314.030000}, 
+{src: "IMG_5790.JPG", date: "2010:10:03 13:20:13", lat: 45.264039, lon: 6.726092, alt: 2314.030000}, 
+{src: "IMG_5791.JPG", date: "2010:10:03 13:20:25", lat: 45.264061, lon: 6.726069, alt: 2314.030000}, 
+{src: "IMG_5792.JPG", date: "2010:10:03 13:22:53", lat: 45.264933, lon: 6.725086, alt: 2329.409900}, 
+{src: "IMG_5795.JPG", date: "2010:10:03 13:23:24", lat: 45.264939, lon: 6.724986, alt: 2330.849900}, 
+{src: "IMG_5796.JPG", date: "2010:10:03 13:24:42", lat: 45.265183, lon: 6.723553, alt: 2321.719900}, 
+{src: "IMG_5797.JPG", date: "2010:10:03 13:27:55", lat: 45.265292, lon: 6.717344, alt: 2269.809900}, 
+{src: "IMG_5798.JPG", date: "2010:10:03 13:32:51", lat: 45.264308, lon: 6.713433, alt: 2211.170000}, 
+{src: "IMG_5799.JPG", date: "2010:10:03 13:33:38", lat: 45.264200, lon: 6.712433, alt: 2206.360000}, 
+{src: "IMG_5800.JPG", date: "2010:10:03 13:36:17", lat: 45.261100, lon: 6.712725, alt: 2151.090000}, 
+{src: "IMG_5801.JPG", date: "2010:10:03 13:39:32", lat: 45.259822, lon: 6.714186, alt: 2135.710000}, 
+{src: "IMG_5803.JPG", date: "2010:10:03 13:51:42", lat: 45.248683, lon: 6.721017, alt: 1965.069900}, 
+{src: "IMG_5806.JPG", date: "2010:10:03 14:55:25", lat: 45.233825, lon: 6.702372, alt: 2336.139900}, 
+{src: "IMG_5807.JPG", date: "2010:10:03 14:55:35", lat: 45.233825, lon: 6.702372, alt: 2336.139900}, 
+{src: "IMG_5809.JPG", date: "2010:10:03 15:01:49", lat: 45.231931, lon: 6.694492, alt: 2252.989900}, 
+{src: "IMG_5812.JPG", date: "2010:10:03 15:07:52", lat: 45.230803, lon: 6.693264, alt: 2153.010000}, 
+{src: "IMG_5815.JPG", date: "2010:10:03 16:06:27", lat: 45.223453, lon: 6.698453, alt: 1641.109900}, 
+{src: "IMG_5816.JPG", date: "2010:10:03 16:06:31", lat: 45.223311, lon: 6.698561, alt: 1635.819900}, 
+{src: "IMG_5817.JPG", date: "2010:10:03 16:08:55", lat: 45.222897, lon: 6.698775, alt: 1606.980000}, 
+{src: "IMG_5819.JPG", date: "2010:10:03 16:14:15", lat: 45.221044, lon: 6.699225, alt: 1541.130000}, 
+{src: "IMG_5820.JPG", date: "2010:10:03 16:14:22", lat: 45.220886, lon: 6.699053, alt: 1535.839900}, 
+	];
+	var imageContainer;
+	var debugDiv;
+	var mapCanvas;
+	var map;
+	var marker;
+	var caption;
+	function debug(str) {
+		// debugDiv.innerHTML=debugDiv.innerHTML + str + "<br/>";
+	}
+	function run() {
+		debugDiv=document.getElementById("debug");
+		imageContainer=document.getElementById("imageContainer");
+		mapCanvas=document.getElementById("mapCanvas");
+		caption=document.getElementById("caption");
+		var position=new google.maps.LatLng(imageData[0].lat, imageData[0].lon);
+		map=new google.maps.Map(mapCanvas, {zoom: 12, mapTypeId: google.maps.MapTypeId.TERRAIN, mapTypeControl: false, streetViewControl: false});
+		var kmlLayer = new google.maps.KmlLayer("http://npf.free.fr/photogpxslideshow/gpx.kml", 
+			{map: map, suppressInfoWindows: true});
+			//{map: map, preserveViewport: true, suppressInfoWindows: true});
+    marker = new google.maps.Marker({map: map}); 
+		preloadImages();
+	}
+	function createImage(i) {
+		if (imageData[i]) {
+			var image=new Image();
+			image.index=i;
+			image.data=imageData[i];
+			image.src="pics2/" + imageData[i].src;
+			image.className="image";
+			image.id="image" + i;
+			debug("loading " + image.data.src);
+			return image;
+		} 
+		debug("No image data for index " + i);
+		return null;
+	}
+	function preloadImages() {
+		for (i=imageIndex;i<imagePreload;i++) {
+			var image;
+			image=createImage(i);
+			imageContainer.appendChild(image);
+			image.addEventListener("load", imagePreloadedHandler, true);
+		}
+	}
+	function imagePreloadedHandler() {
+		this.removeEventListener("load", imagePreloadedHandler, true);
+		imagePreload--;
+		if (!imagePreload) {
+			debug("preload completed, starting slideshow");
+			slideshow();
+		}
+	}
+	function slideshow() {
+		showImage.call( imageContainer.firstElementChild);
+	}
+	function showImage() {
+		this.addEventListener("webkitTransitionEnd", imageDisplayedHandler , true);
+		//this.addEventListener("click", imageDisplayedHandler , true);
+		if ((this.naturalWidth > window.innerWidth) || (this.naturalHeight > window.innerHeight)) {
+				var w=this.naturalWidth * window.innerHeight / this.naturalHeight;
+				var h=this.naturalHeight * window.innerWidth / this.naturalWidth;
+				if (w > window.innerWidth) {
+					w=window.innerWidth;
+				} else {
+					h=window.innerHeight;
+				}
+		} else {
+			w=this.naturalWidth;
+			h=this.naturalHeight;
+		}
+		this.style.visibility="visible";
+		this.style.opacity=1;
+		this.style.width=w;
+		this.style.height=h;
+		this.style.top=((window.innerHeight - h) / 2) + "px";
+		this.style.left=((window.innerWidth - w) / 2) + "px";
+	}
+	function imageDisplayedHandler() {
+		debug(this.data.src + " displayed");
+		map.setCenter(new google.maps.LatLng(this.data.lat, this.data.lon));
+		this.removeEventListener('webkitTransitionEnd', imageDisplayedHandler, true);
+		//this.removeEventListener('click', imageDisplayedHandler, true);
+		var position=new google.maps.LatLng(this.data.lat, this.data.lon);
+		map.setCenter(position);
+		marker.setPosition(position);
+		caption.innerHTML=this.data.date + " - " + Math.round(this.data.alt) + "m";
+		hideImage.call(this);
+	}
+	function hideImage() {
+		this.addEventListener("webkitTransitionEnd", imageCycledHandler, true);
+		var nextImage=this.nextElementSibling;
+		if (nextImage) {
+			showImage.call(nextImage);
+			this.style.opacity=0;
+			/*
+			this.style.width="0px";
+			this.style.height="0px";
+			this.style.top="0px";
+			this.style.left=window.innerWidth + "px";
+			*/
+		} else {
+			caption.innerHTML="The End";
+		}
+	}
+	function imageCycledHandler() {
+		this.removeEventListener("webkitTransitionEnd", imageCycledHandler, true);
+		var image;
+		if (image=createImage(this.parentNode.lastElementChild.index+1)) {
+			imageContainer.appendChild(image);
+		}
+		this.parentNode.removeChild(this);
+	}
+</script>
+</head>
+<body onload="run()">
+	<div id="imageContainer"> </div>
+	<div id="mapCanvas"></div>
+	<div id="captionDiv">
+		<h3 id="caption">Loading...</h3>
+	</div>
+	<div id="debug"></div>
+</body>
+</html>
+
